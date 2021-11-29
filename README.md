@@ -148,7 +148,7 @@
 ####		harr[0] = x;
 ####		maxHeapify(0);
 ####	}
-####};
+#### };
 
 #### MaxHeap::MaxHeap(int a[], int size)
 #### {
@@ -179,12 +179,12 @@
 ####	heap_size--;
 
 ####	return root;
-####}
+#### }
 
-####// A recursive method to heapify a subtree with root at given index
-####// This method assumes that the subtrees are already heapified
-####void MaxHeap::maxHeapify(int i)
-####{
+#### // A recursive method to heapify a subtree with root at given index
+#### // This method assumes that the subtrees are already heapified
+#### void MaxHeap::maxHeapify(int i)
+#### {
 ####	int l = left(i);
 ####	int r = right(i);
 ####	int largest = i;
@@ -196,19 +196,19 @@
 ####		swap(&harr[i], &harr[largest]);
 ####		maxHeapify(largest);
 ####	}
-####}
+#### }
 
 #### // A utility function to swap two elements
-####void swap(int* x, int* y)
-####{
+#### void swap(int* x, int* y)
+#### {
 ####	int temp = *x;
 ####	*x = *y;
 ####	*y = temp;
 ####}
 
-####// Function to return k'th largest element in a given array
-####int kthSmallest(int arr[], int n, int k)
-####{
+#### // Function to return k'th largest element in a given array
+#### int kthSmallest(int arr[], int n, int k)
+#### {
 ####	// Build a heap of first k elements: O(k) time
 ####	MaxHeap mh(arr, k);
 
@@ -223,12 +223,12 @@
 #### }
 
 #### // Driver program to test above methods
-####int main()
+#### int main()
 #### {
 ####	int arr[] = { 12, 3, 5, 7, 19 };
 ####	int n = sizeof(arr) / sizeof(arr[0]), k = 4;
 ####	cout << "K'th smallest element is " << kthSmallest(arr, n, k);
 ####	return 0;
-####}
+#### }
 
 
