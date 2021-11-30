@@ -232,3 +232,7 @@
 #### }
 
 
+#### 4.Given an array of size N containing only 0s, 1s, and 2s; sort the array in ascending order.
+	##### 1.Using sort() method
+	##### 2.number of times 0's,1's,2's
+	
