@@ -234,5 +234,273 @@
 
 #### 4.Given an array of size N containing only 0s, 1s, and 2s; sort the array in ascending order.
 	##### 1.Using sort() method
-	##### 2.number of times 0's,1's,2's
+	##### 2.number of times 0's,1's,2's 
+##### // C++ implementation of the approach
+##### #include <bits/stdc++.h>
+##### using namespace std;
+
+##### // Utility function to print the contents of an array
+##### void printArr(int arr[], int n)
+##### {
+##### 	for (int i = 0; i < n; i++)
+##### 		cout << arr[i] << " ";
+##### }
+
+##### // Function to sort the array of 0s, 1s and 2s
+##### void sortArr(int arr[], int n)
+##### {
+##### 	int i, cnt0 = 0, cnt1 = 0, cnt2 = 0;
+
+#####	// Count the number of 0s, 1s and 2s in the array
+##### 	for (i = 0; i < n; i++) {
+##### 		switch (arr[i]) {
+##### 		case 0:
+##### 			cnt0++;
+##### 			break;
+##### 		case 1:
+##### 			cnt1++;
+##### 			break;
+##### 		case 2:
+##### 			cnt2++;
+##### 			break;
+##### 		}
+##### 	}
+
+##### 	// Update the array
+##### 	i = 0;
+
+##### // Store all the 0s in the beginning
+##### 	while (cnt0 > 0) {
+##### 		arr[i++] = 0;
+##### 		cnt0--;
+##### 	}
+
+##### 	// Then all the 1s
+##### while (cnt1 > 0) {
+##### 		arr[i++] = 1;
+##### 		cnt1--;
+##### 	}
+
+#####	// Finally all the 2s
+##### 	while (cnt2 > 0) {
+##### 		arr[i++] = 2;
+##### 		cnt2--;
+##### 	}
+
+##### 	// Print the sorted array
+##### 	printArr(arr, n);
+##### }
+
+##### // Driver code
+##### int main()
+##### {
+#####	int arr[] = { 0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1 };
+#####	int n = sizeof(arr) / sizeof(int);
+
+#####	sortArr(arr, n);
+
+ ##### return 0;
+##### }
+
+#### 5.Kadane Algorithm
+	#####// C++ program to print largest contiguous array sum
+##### #include<iostream>
+##### #include<climits>
+##### using namespace std;
+ 
+##### int maxSubArraySum(int a[], int size)
+##### {
+#####     int max_so_far = INT_MIN, max_ending_here = 0;
+##### 
+#####     for (int i = 0; i < size; i++)
+#####     {
+#####         max_ending_here = max_ending_here + a[i];
+#####         if (max_so_far < max_ending_here)
+#####             max_so_far = max_ending_here;
+ 
+#####         if (max_ending_here < 0)
+#####             max_ending_here = 0;
+#####     }
+#####     return max_so_far;
+##### }
+ 
+##### /*Driver program to test maxSubArraySum*/
+##### int main()
+##### {
+#####     int a[] = {-2, -3, 4, -1, -2, 1, 5, -3};
+#####     int n = sizeof(a)/sizeof(a[0]);
+#####     int max_sum = maxSubArraySum(a, n);
+#####    cout << "Maximum contiguous sum is " << max_sum;
+#####     return 0;
+### 6.Count Minimum Number of Jumps to reach End
+Input: arr[] = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9}
+Output: 3 (1-> 3 -> 9 -> 9)
+Explanation: Jump from 1st element 
+to 2nd element as there is only 1 step, 
+now there are three options 5, 8 or 9. 
+If 8 or 9 is chosen then the end node 9 
+can be reached. So 3 jumps are made.
+	
+Method 3: Dynamic Programming. 
+In this method, we build jumps[] array from right to left such that jumps[i] indicates the minimum number of jumps needed to reach arr[n-1] from arr[i]. Finally, we return jumps[0]. 
+	
+// C++ program to find Minimum
+// number of jumps to reach end
+#include <bits/stdc++.h>
+using namespace std;
+
+// Returns Minimum number of
+// jumps to reach end
+int minJumps(int arr[], int n)
+{
+	// jumps[0] will hold the result
+	int* jumps = new int[n];
+	int min;
+
+	// Minimum number of jumps needed
+	// to reach last element from last
+	// elements itself is always 0
+	jumps[n - 1] = 0;
+
+	// Start from the second element,
+	// move from right to left and
+	// construct the jumps[] array where
+	// jumps[i] represents minimum number
+	// of jumps needed to reach
+	// arr[m-1] from arr[i]
+	for (int i = n - 2; i >= 0; i--) {
+		// If arr[i] is 0 then arr[n-1]
+		// can't be reached from here
+		if (arr[i] == 0)
+			jumps[i] = INT_MAX;
+
+		// If we can directly reach to
+		// the end point from here then
+		// jumps[i] is 1
+		else if (arr[i] >= n - i - 1)
+			jumps[i] = 1;
+
+		// Otherwise, to find out the minimum
+		// number of jumps needed to reach
+		// arr[n-1], check all the points
+		// reachable from here and jumps[]
+		// value for those points
+		else {
+			// initialize min value
+			min = INT_MAX;
+
+			// following loop checks with all
+			// reachable points and takes
+			// the minimum
+			for (int j = i + 1; j < n && j <= arr[i] + i; j++) {
+				if (min > jumps[j])
+					min = jumps[j];
+			}
+
+			// Handle overflow
+			if (min != INT_MAX)
+				jumps[i] = min + 1;
+			else
+				jumps[i] = min; // or INT_MAX
+		}
+	}
+
+	return jumps[0];
+}
+
+// Driver program to test above function
+int main()
+{
+	int arr[] = { 1, 3, 6, 1, 0, 9 };
+	int size = sizeof(arr) / sizeof(int);
+	cout << "Minimum number of jumps to reach"
+		<< " end is " << minJumps(arr, size);
+	return 0;
+}
+Time Complexity :O(n^2)
+So,If you want time complexity in O(n) times
+	// C++ program to count Minimum number
+// of jumps to reach end
+#include <bits/stdc++.h>
+using namespace std;
+
+int max(int x, int y)
+{
+	return (x > y) ? x : y;
+}
+
+// Returns minimum number of jumps
+// to reach arr[n-1] from arr[0]
+int minJumps(int arr[], int n)
+{
+
+	// The number of jumps needed to
+	// reach the starting index is 0
+	if (n <= 1)
+		return 0;
+
+	// Return -1 if not possible to jump
+	if (arr[0] == 0)
+		return -1;
+
+	// initialization
+	// stores all time the maximal
+	// reachable index in the array.
+	int maxReach = arr[0];
+
+	// stores the number of steps
+	// we can still take
+	int step = arr[0];
+
+	// stores the number of jumps
+	// necessary to reach that maximal
+	// reachable position.
+	int jump = 1;
+
+	// Start traversing array
+	int i = 1;
+	for (i = 1; i < n; i++) {
+		// Check if we have reached the end of the array
+		if (i == n - 1)
+			return jump;
+
+		// updating maxReach
+		maxReach = max(maxReach, i + arr[i]);
+
+		// we use a step to get to the current index
+		step--;
+
+		// If no further steps left
+		if (step == 0) {
+			// we must have used a jump
+			jump++;
+
+			// Check if the current index/position or lesser index
+			// is the maximum reach point from the previous indexes
+			if (i >= maxReach)
+				return -1;
+
+			// re-initialize the steps to the amount
+			// of steps to reach maxReach from position i.
+			step = maxReach - i;
+		}
+	}
+
+	return -1;
+}
+
+// Driver program to test above function
+int main()
+{
+	int arr[] = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
+	int size = sizeof(arr) / sizeof(int);
+
+	// Calling the minJumps function
+	cout << ("Minimum number of jumps to reach end is %d ",
+			minJumps(arr, size));
+	return 0;
+}
+// This code is contributed by
+
+
 	
